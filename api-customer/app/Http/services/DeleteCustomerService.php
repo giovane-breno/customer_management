@@ -6,7 +6,7 @@ use App\Models\Customer;
 
 class DeleteCustomerService
 {
-    public function destroy($id)
+    public function DestroyCustomer($id)
     {
         try {
             Customer::where('active', true)->findOrfail($id)->update(['active' => false]);
