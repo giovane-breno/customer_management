@@ -18,7 +18,7 @@ class CustomerController extends Controller
     public function index()
     {
         $controller = new ControllersCustomerController();
-        $controller->ShowCustomersTable();
+        return $controller->ShowCustomersTable();
     }
 
     /**
@@ -30,7 +30,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $controller = new ControllersCustomerController();
-        $controller->AddCustomer($request);
+        return $controller->AddCustomer($request);
     }
 
     /**
@@ -42,7 +42,7 @@ class CustomerController extends Controller
     public function show($id)
     {
         $controller = new ControllersCustomerController();
-        $controller->SelectCustomer($id);
+        return $controller->SelectCustomer($id);
     }
 
     /**
@@ -55,7 +55,7 @@ class CustomerController extends Controller
     public function update(Request $request, $id)
     {
         $controller = new ControllersCustomerController();
-        $controller->UpdateCustomer($request, $id);
+        return $controller->UpdateCustomer($request, $id);
     }
 
     /**
@@ -67,6 +67,6 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $service = new DeleteCustomerService();
-        $service->DestroyCustomer($id);
+        return $service->DestroyCustomer($id);
     }
 }
