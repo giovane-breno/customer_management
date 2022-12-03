@@ -23,7 +23,9 @@
             <div class="col-10 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Api - Cadastro de Clientes</h4>
+                        <h4 class="card-title">Api - Cadastro de Clientes <a type="button"
+                                class="btn btn-success btnAdd float-right" data-toggle="modal"
+                                data-target="#AddModal"><i class="fa fa-plus"></i> Novo Cliente</a></h4>
                         <p class="card-description">
                             Api com o objetivo de realizar as 4 operações CRUD, com deposito de dados no banco de dados.
                         </p>
@@ -45,6 +47,77 @@
                             </table>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="AddModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AddModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Nome</label>
+                                    <input type="text" required class="form-control name" id="inputName" name="name"
+                                        placeholder="Nome do Cliente">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Idade</label>
+                                    <input type="text" required class="form-control age" id="inputAge" name="age"
+                                        placeholder="Idade" data-inputmask-mask="99">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Número de Telefone</label>
+                                    <input type="text" class="form-control" id="inputPhoneNumber" name="phone_number"
+                                        placeholder="(99) 99999-9999">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email</label>
+                                    <input type="email" class="form-control" id="inputEmail" name="email"
+                                        placeholder="exemplo@exemplo.com">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Endereço</label>
+                                    <input type="text" required class="form-control adress" name="adress"
+                                        id="inputAdress" placeholder="Rua de Exemplo, 155">
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Estado</label>
+                                    <select required class="form-control" id="selectState">
+                                        <option disabled selected>Selecione um Estado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <a id="btnSubmitModal" class="btn btn-primary float-end mt-2">Adicionar</a>
+                        <a id="btnEditModal" class="btn btn-warning float-end mt-2">Editar</a>
+
+
+                    </form>
                 </div>
             </div>
         </div>
@@ -74,6 +147,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -95,6 +169,10 @@
 <script>
 
     $(document).ready(function () {
+        $(":input").inputmask();
+        $("#inputPhoneNumber").inputmask("(99) 99999-9999");
+
+
         $.getJSON("http://127.0.0.1:8000/api/customers")
             .done(function (data) {
                 var customersTable = $('#tblCustomers tbody');
@@ -112,17 +190,164 @@
 
                     $('#tblCustomers').append('<tr><td class="text-center">' + name + '</td><td class="text-center">' + age + '</td><td class="text-center">' + adress +
                         '</td><td class="text-center">' + state + '</td><td class="text-center">' + email + '</td><td class="text-center">' + phone_number +
-                        '<td class="text-center"><a type="button" id="btnEdit" class=" mr-1 btn btn-primary btnUpdate" data-id="' + id + '"><i class="fa fa-pencil"></i></a>' +
+                        '<td class="text-center"><a type="button" id="btnEdit" class=" mr-1 btn btn-primary btnEdit" data-toggle="modal" data-target="#AddModal" data-id="' + id + '"><i class="fa fa-pencil"></i></a>' +
                         '<a type="button" class="btn btn-danger btnDelete" data-toggle="modal" data-target="#DeleteModal" data-id="' + id + '"><i class="fa fa-trash"></i></a> </td></tr>');
                 }
             });
 
     });
 
+    var states = [
+        'Acre',
+        'Alagoas',
+        'Amapá',
+        'Amazonas',
+        'Bahia',
+        'Ceará',
+        'Distrito Federal',
+        'Espirito Santo',
+        'Goiás',
+        'Maranhão',
+        'Mato Grosso do Sul',
+        'Mato Grosso',
+        'Minas Gerais',
+        'Pará',
+        'Paraíba',
+        'Paraná',
+        'Pernambuco',
+        'Piauí',
+        'Rio de Janeiro',
+        'Rio Grande do Norte',
+        'Rio Grande do Sul',
+        'Rondônia',
+        'Roraima',
+        'Santa Catarina',
+        'São Paulo',
+        'Sergipe',
+        'Tocantins'
+    ];
+    /* POPULAR SELECT COM DADOS DO ARRAY */
 
-    // $(document).on("click", ".btnDelete", function () {
-    //     $('#DeleteModal').modal('show');
-    // });
+    var selectStates = document.getElementById("selectState");
+    for (var i = 0; i < states.length; ++i) {
+        selectStates[selectStates.length] = new Option(states[i], states[i]);
+    }
+
+    $('#submit').click(function (e) {
+        e.preventDefault;
+        var name = $("#inputName").val();
+        var age = $("#inputAge").val();
+        var phone_number = $("#inputPhoneNumber").val();
+        var email = $("#inputEmail").val();
+        var adress = $("#inputAdress").val();
+        var state = $("#selectState").val();
+
+        $.ajax({
+            method: "POST",
+            url: "http://127.0.0.1:8000/api/customers/",
+            data: {
+                name: name,
+                age: age,
+                phone_number: phone_number,
+                email: email,
+                adress: adress,
+                state: state
+            },
+            dataType: "json",
+            success: function (response) {
+                $('#AddModal').modal('hide');
+                location.reload();
+            }
+        });
+    });
+
+    var customerID;
+    // FUNÇÃO DELETE
+    $(document).on("click", ".btnDelete", function () {
+        customerID = $(this).data("id");
+    });
+
+    // FUNÇÃO ADICIONAR
+    $(document).on("click", ".btnAdd", function () {
+        $('#AddModalTitle').text("Adicionar Cliente");
+        $('#btnSubmitModal').show();
+        $('#btnEditModal').hide();
+
+        $('#inputName').val('');
+        $('#inputAge').val('');
+        $('#inputAdress').val('');
+        $('#selectState').prop('selectedIndex', 0);
+        $('#inputEmail').val('');
+        $('#inputPhoneNumber').val('');
+
+        customerID = $(this).data("id");
+    });
+    // FUNÇÃO EDITAR
+    $(document).on("click", "#btnEdit", function () {
+        $('#AddModalTitle').text("Editar Cliente");
+        $('#btnEditModal').show();
+        $('#btnSubmitModal').hide();
+
+        customerID = $(this).data("id");
+        var $row = $(this).closest("tr");
+
+        $name = $row.find("td:nth-child(1)").text();
+        $age = $row.find("td:nth-child(2)").text();
+        $adress = $row.find("td:nth-child(3)").text();
+        $state = $row.find("td:nth-child(4)").text();
+        $mail = $row.find("td:nth-child(5)").text();
+        $phone = $row.find("td:nth-child(6)").text();
+
+        $('#inputName').val($name);
+        $('#inputAge').val($age);
+        $('#inputAdress').val($adress);
+        $('#selectState').val($state);
+        $('#inputEmail').val($mail);
+        $('#inputPhoneNumber').val($phone);
+
+    });
+
+    //MODAL DELETE
+    $('#btnDeleteModal').click(function (e) {
+        e.preventDefault();
+        var url = 'http://127.0.0.1:8000/api/customers/' + customerID;
+        $.ajax({
+            type: "DELETE",
+            url: url,
+            success: function (response) {
+                $('#DeleteModal').modal('hide');
+                location.reload();
+            }
+        });
+    });
+
+    //MODAL EDIT
+    $('#btnEditModal').click(function (e) {
+        e.preventDefault();
+        var name = $("#inputName").val();
+        var age = $("#inputAge").val();
+        var phone_number = $("#inputPhoneNumber").val();
+        var email = $("#inputEmail").val();
+        var adress = $("#inputAdress").val();
+        var state = $("#selectState").val();
+        var url = 'http://127.0.0.1:8000/api/customers/' + customerID;
+        $.ajax({
+            type: "PUT",
+            url: url,
+            data: {
+                name: name,
+                age: age,
+                phone_number: phone_number,
+                email: email,
+                adress: adress,
+                state: state
+            },
+            success: function (response) {
+                $('#AddModal').modal('hide');
+                location.reload();
+            }
+        });
+    });
 
 
 </script>

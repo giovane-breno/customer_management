@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CustomerController as ControllersCustomerController;
-use App\Http\Controllers\Services\DeleteCustomerService;
+use App\Http\Services\DeleteCustomerService;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
