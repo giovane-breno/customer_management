@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('customers', 'App\Http\Controllers\Api\CustomerController');
+
+Route::prefix('customers')->group(function ()
+    {
+        Route::get('/', [CustomerController::class, 'findActiveCustomers']);
+        Route::post('/', [CustomerController::class, 'addCustomer']);
+        Route::post('/{id}', [CustomerController::class, 'selectCustomer']);
+        Route::delete('/{id}', [CustomerController::class, 'deleteCustomer']);
+    });

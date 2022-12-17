@@ -3,16 +3,18 @@
 namespace App\Http\Services;
 
 use App\Models\Customer;
+use Exception;
 
 class DeleteCustomerService
 {
-    public function DestroyCustomer($id)
+    public function destroyCustomer($id)
     {
-        try {
-            Customer::where('active', true)->findOrfail($id)->update(['active' => false]);
-            return response()->json(['message' => 'Customer deleted sucessfully!'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Customer not found or already deleted!'], 404);
+        $deleteCustomer = Customer::where('active', true)->findOrfail($id)->update(['active' => false]);
+        
+        if (!$deleteCustomer){
+            throw new Exception('Não há registros de clientes.');
         }
+
+        return true;
     }
 }

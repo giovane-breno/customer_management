@@ -2,65 +2,78 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\CreateCustomerService;
+use App\Http\Services\DeleteCustomerService;
+use App\Http\Services\FindActiveCustomerService;
+use App\Http\Services\FindCustomerByIdService;
+use App\Http\Services\UpdateCustomerService;
 use App\Models\Customer;
+use Exception;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function ShowCustomersTable()
+    public function findActiveCustomers()
     {
         try {
-            $customer = Customer::where('active', true)->orderby('id', 'desc')->get();
-            return response()->json(['customers' => $customer], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Empty table, register one customer at least!'], 404);
+            $findActiveCustomerService = new FindActiveCustomerService();
+            $activeCustomers = $findActiveCustomerService->findCustomers();
+            return response()->json(['customers' => $activeCustomers], 200);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 
-    public function AddCustomer($request)
+    public function addCustomer(Request $request)
     {
         try {
-            $customer = Customer::create([
-                'name' => $request->name,
-                'age' => $request->age,
-                'adress' => $request->adress,
-                'state' => $request->state,
-                'email' => $request->email,
-                'phone_number' => $request->phone_number,
-                'active' => 1,
-            ]);
-            $customer->save();
+            $createCustomerService = new CreateCustomerService();
+            $createCustomerService->createCustomer(
+                $request->name,
+                $request->age,
+                $request->adress,
+                $request->state,
+                $request->email,
+                $request->phone_number
+            );
+
             return response()->json(['message' => 'Customer sucessfully registered!'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Invalid Request'], 400);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 
-    public function SelectCustomer($id)
+    public function selectCustomer($id)
     {
         try {
-            $customer = Customer::where('active', true)->findOrfail($id);
+            $FindCustomerByIdService = new FindCustomerByIdService();
+            $customer = $FindCustomerByIdService->findCustomer($id);
             return response()->json(['customer' => $customer], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Customer not found!'], 404);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 
-    public function UpdateCustomer($request, $id)
+    public function updateCustomer(Request $request, $id)
     {
         try {
-            $customer = Customer::where('active', true)->findOrfail($id);
-            $customer->fill([
-                'name' => $request->name,
-                'age' => $request->age,
-                'adress' => $request->adress,
-                'state' => $request->state,
-                'email' => $request->email,
-                'phone_number' => $request->phone_number,
-            ]);
-            $customer->save();
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Customer not found!'], 404);
+            $UpdateCustomerService = new UpdateCustomerService();
+            $UpdateCustomerService->updateCustomer($request, $id);
+            return response()->json(['message' => 'Customer updated sucessfully!'], 200);
+
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
+        }
+    }
+
+    public function deleteCustomer($id)
+    {
+        try {
+            $deleteCustomerService = new DeleteCustomerService();
+            $deleteCustomerService->destroyCustomer($id);
+            return response()->json(['message' => 'Successful deleted!']);
+        } catch (Exception  $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 }

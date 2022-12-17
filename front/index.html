@@ -19,8 +19,8 @@
 
 <body>
     <div class="container mt-5 mx-auto ">
-        <div class="row offset-2">
-            <div class="col-10 grid-margin stretch-card">
+        <div class="row">
+            <div class="col grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Api - Cadastro de Clientes <a type="button"
@@ -167,36 +167,6 @@
 <!-- INPUTMASK -->
 <script src="dist/jquery.inputmask.js"></script>
 <script>
-
-    $(document).ready(function () {
-        $(":input").inputmask();
-        $("#inputPhoneNumber").inputmask("(99) 99999-9999");
-
-
-        $.getJSON("http://127.0.0.1:8000/api/customers")
-            .done(function (data) {
-                var customersTable = $('#tblCustomers tbody');
-                customersTable.empty();
-                var len = data.customers.length;
-                for (var i = 0; i < len; i++) {
-                    var id = data.customers[i].id;
-                    var name = data.customers[i].name;
-                    var age = data.customers[i].age;
-                    var adress = data.customers[i].adress;
-                    var state = data.customers[i].state;
-                    var email = data.customers[i].email;
-                    var phone_number = data.customers[i].phone_number;
-
-
-                    $('#tblCustomers').append('<tr><td class="text-center">' + name + '</td><td class="text-center">' + age + '</td><td class="text-center">' + adress +
-                        '</td><td class="text-center">' + state + '</td><td class="text-center">' + email + '</td><td class="text-center">' + phone_number +
-                        '<td class="text-center"><a type="button" id="btnEdit" class=" mr-1 btn btn-primary btnEdit" data-toggle="modal" data-target="#AddModal" data-id="' + id + '"><i class="fa fa-pencil"></i></a>' +
-                        '<a type="button" class="btn btn-danger btnDelete" data-toggle="modal" data-target="#DeleteModal" data-id="' + id + '"><i class="fa fa-trash"></i></a> </td></tr>');
-                }
-            });
-
-    });
-
     var states = [
         'Acre',
         'Alagoas',
@@ -228,12 +198,45 @@
     ];
     /* POPULAR SELECT COM DADOS DO ARRAY */
 
+
+    $(document).ready(function () {
+        $(":input").inputmask();
+        $("#inputPhoneNumber").inputmask("(99) 99999-9999");
+
+
+        $.getJSON("http://127.0.0.1:8000/api/customers")
+            .done(function (data) {
+                var customersTable = $('#tblCustomers tbody');
+                customersTable.empty();
+                var len = data.customers.length;
+                for (var i = 0; i < len; i++) {
+                    var id = data.customers[i].id;
+                    var name = data.customers[i].name;
+                    var age = data.customers[i].age;
+                    var adress = data.customers[i].adress;
+                    var state = data.customers[i].state;
+                    var email = data.customers[i].email;
+                    var phone_number = data.customers[i].phone_number;
+
+
+                    $('#tblCustomers').append('<tr><td class="text-center">' + name + '</td><td class="text-center">' + age + '</td><td class="text-center">' + adress +
+                        '</td><td class="text-center">' + state + '</td><td class="text-center">' + email + '</td><td class="text-center">' + phone_number +
+                        '<td class="text-center"><a type="button" id="btnEdit" class=" mr-1 btn btn-primary btnEdit" data-toggle="modal" data-target="#AddModal" data-id="' + id + '"><i class="fa fa-pencil"></i></a>' +
+                        '<a type="button" class="btn btn-danger btnDelete" data-toggle="modal" data-target="#DeleteModal" data-id="' + id + '"><i class="fa fa-trash"></i></a> </td></tr>');
+                }
+            });
+
+    });
+
+
+
     var selectStates = document.getElementById("selectState");
     for (var i = 0; i < states.length; ++i) {
         selectStates[selectStates.length] = new Option(states[i], states[i]);
     }
 
-    $('#submit').click(function (e) {
+
+    $('#btnSubmitModal').click(function (e) {
         e.preventDefault;
         var name = $("#inputName").val();
         var age = $("#inputAge").val();
@@ -261,7 +264,7 @@
         });
     });
 
-    var customerID;
+    let customerID;
     // FUNÇÃO DELETE
     $(document).on("click", ".btnDelete", function () {
         customerID = $(this).data("id");
@@ -282,6 +285,7 @@
 
         customerID = $(this).data("id");
     });
+
     // FUNÇÃO EDITAR
     $(document).on("click", "#btnEdit", function () {
         $('#AddModalTitle').text("Editar Cliente");
