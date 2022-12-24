@@ -19,7 +19,7 @@
 <br>
 
 
-## ­ƒøá´©Å About The Project
+## About The Project
 
 This is an API to do all the 4 CRUD operations. (CREATE - READ - UPDATE - DELETE).<br>
 The user can register a customer using a form. 
@@ -28,7 +28,7 @@ Then, if He wants, it is possible to edit the customer data or just delete it.
 To make this project I used Laravel framework, in the API, and Bootstrap, in the front-end.
 If you liked this project or have suggestions, feel free to contact me and... please leave a star. ­ƒÖé
 
-## ­ƒÆ╗ Project Working
+## Project Working
 
 ![image](https://user-images.githubusercontent.com/57039322/206027890-bee4c00d-62ba-4555-a2da-16aaf425be0d.png)
 ![image](https://user-images.githubusercontent.com/57039322/206027943-48a2522c-c2fe-42f7-a9a0-a1a5847ca00a.png)
@@ -38,7 +38,7 @@ If you liked this project or have suggestions, feel free to contact me and... pl
 
 
 
-## ­ƒÆá Set-up the project
+## Set-up the project
 
 Before running the project, you need to set-up the database and table.<br>You can just copy and paste the SQL code below, if you want.
 
@@ -65,7 +65,7 @@ After setting up the database, you have to clone this repo.<br>
 Then run Laravel serve command.
 <pre>php artisan serve</pre>
 
-## ­ƒÆíHow the code works
+## How the code works
 
 In `index.html` we have a mix of HTML and JavaScript to the project work properly.
 
@@ -141,7 +141,7 @@ $('#btnDeleteModal').click(function (e) {
     });
 });
 ```
-## ­ƒîÇ Laravel Controller
+## Laravel Controller
 Controller functions in this project, localized in `CustomerControler.php`
 ```php
 // Retrieve all data from DB to table.
@@ -250,7 +250,7 @@ public function updateCustomer($request, $id)
     }
 ```
 
-## ­ƒîÉ Laravel Routes
+## Laravel Routes
 Routes in `api.php`, used in this project.
 ```php
 Route::apiResource('customers', 'App\Http\Controllers\Api\CustomerController');
